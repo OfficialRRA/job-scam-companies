@@ -40,6 +40,7 @@ Maintainer: Alex Shinkarovsky, founder.
 | `data/companies.csv` | The canonical file. One row per entity. GitHub shows it as a searchable table. |
 | `data/companies.jsonl` | One JSON object per line. Good for LLM pipelines and scripts. |
 | `data/companies.sqlite` | One table, `companies`, with indexes on `domain` and `name_normalized`. |
+| `data/ats_hosts.csv`, `data/ats_hosts.jsonl` | Allowlist of known applicant tracking system and job board hosts. See "Allowlist". |
 | `schema/company.schema.json` | JSON Schema for one record. |
 | `llms.txt` | A short guide for LLMs and agents. |
 
@@ -83,6 +84,15 @@ Maintainer: Alex Shinkarovsky, founder.
 | `mlm` | Multi-level marketing (RRA internal). |
 | `insurance_agency_recruiting` | Insurance agencies that recruit contractors through job posts (RRA internal). |
 | `commission_only_direct_sales` | Door-to-door and in-store sales offices that pay commission only (RRA internal). |
+
+## Allowlist of ATS and job board hosts
+
+`data/ats_hosts.csv` lists hosts that belong to known applicant tracking systems (`type` = `ats`) and large job boards (`type` = `job_board`). RRA uses this list in its own job pipeline.
+
+- Match the host of an application link, or a parent domain of that host. For example, `jobs.lever.co` matches `lever.co`.
+- A match means that the link uses a real hiring platform. It does not mean that the employer or the job is real, because a scam operation can also open an account on a real platform.
+- A link that is on no known platform and on no domain of the employer needs a closer look.
+- The list is incomplete. A host that is absent from the list is not suspect for that reason alone.
 
 ## Examples
 

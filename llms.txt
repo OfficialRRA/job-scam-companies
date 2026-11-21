@@ -7,6 +7,7 @@
 - data/companies.jsonl: one JSON object per line. Load this file first.
 - data/companies.csv: the canonical file, same records.
 - data/companies.sqlite: table `companies`, indexes on `domain` and `name_normalized`.
+- data/ats_hosts.jsonl: allowlist of known ATS and job board hosts ({host, type}). A match on the host or a parent domain means a real hiring platform. It does not prove that the job is real.
 - schema/company.schema.json: JSON Schema for one record.
 - README.md: field meanings, categories, method, limits.
 
