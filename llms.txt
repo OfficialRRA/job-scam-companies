@@ -8,6 +8,7 @@
 - data/companies.csv: the canonical file, same records.
 - data/companies.sqlite: table `companies`, indexes on `domain` and `name_normalized`.
 - data/ats_hosts.jsonl: allowlist of known ATS and job board hosts ({host, type}). A match on the host or a parent domain means a real hiring platform. It does not prove that the job is real.
+- data/lookalike_domains.csv: fake domains that copy a real business ({impersonated_business, lookalike_domain, source}). The impersonated business is the victim.
 - schema/company.schema.json: JSON Schema for one record.
 - README.md: field meanings, categories, method, limits.
 

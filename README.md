@@ -41,6 +41,7 @@ Maintainer: Alex Shinkarovsky, founder.
 | `data/companies.jsonl` | One JSON object per line. Good for LLM pipelines and scripts. |
 | `data/companies.sqlite` | One table, `companies`, with indexes on `domain` and `name_normalized`. |
 | `data/ats_hosts.csv`, `data/ats_hosts.jsonl` | Allowlist of known applicant tracking system and job board hosts. See "Allowlist". |
+| `data/lookalike_domains.csv` | Fake domains that copy a real business, one row per domain, sorted by the business they copy. The build script makes it from `companies.csv`. The business in the first column is the victim. |
 | `schema/company.schema.json` | JSON Schema for one record. |
 | `llms.txt` | A short guide for LLMs and agents. |
 

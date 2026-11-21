@@ -18,6 +18,7 @@ ROOT = Path(__file__).resolve().parent.parent
 CSV_PATH = ROOT / "data" / "companies.csv"
 JSONL_PATH = ROOT / "data" / "companies.jsonl"
 SQLITE_PATH = ROOT / "data" / "companies.sqlite"
+LOOKALIKE_PATH = ROOT / "data" / "lookalike_domains.csv"
 
 FIELDS = [
     "id", "name", "aliases", "name_claimed", "name_normalized", "domain", "domain_source",
@@ -171,6 +172,19 @@ def write_sqlite(rows, path=SQLITE_PATH):
     con.close()
 
 
+def write_lookalikes(rows, path=LOOKALIKE_PATH):
+    """One row per fake domain that copies a real business. Derived from companies.csv."""
+    out = [r for r in rows if r["impersonates"] and r["domain"]]
+    out.sort(key=lambda r: (r["impersonates"].lower(), r["domain"]))
+    cols = ["impersonated_business", "lookalike_domain", "record_id", "source_type", "source_url", "source_date"]
+    with open(path, "w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f, lineterminator="\n")
+        w.writerow(cols)
+        for r in out:
+            w.writerow([r["impersonates"], r["domain"], r["id"], r["source_type"], r["source_url"], r["source_date"]])
+    return len(out)
+
+
 def main():
     rows = load_rows()
     changed = fill_derived(rows)
@@ -181,6 +195,7 @@ def main():
         write_csv(rows)
     write_jsonl(rows)
     write_sqlite(rows)
+    write_lookalikes(rows)
     print(f"{len(rows)} records written")
 
 
