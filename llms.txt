@@ -6,10 +6,10 @@
 
 - data/companies.jsonl: one JSON object per line. Load this file first.
 - data/companies.csv: the canonical file, same records.
-- data/companies.sqlite: table `companies`, indexes on `domain` and `name_normalized`.
+- data/companies.sqlite: table `companies`, indexes on `domain` and `name_normalized`. Table `company_domains` (domain, id) holds every domain, including the extra domains in `aliases`. Use it for a domain lookup.
 - data/ats_hosts.jsonl: allowlist of known ATS and job board hosts ({host, type}). A match on the host or a parent domain means a real hiring platform. It does not prove that the job is real.
 - data/lookalike_domains.csv: fake domains that copy a real business ({impersonated_business, lookalike_domain, source}). The impersonated business is the victim.
-- data/dol_debarred_employers.csv: employers that the US Department of Labor debarred from a visa labor program, copied from dol.gov on 2026-11-21. Real businesses, not scam operations. Check dol.gov for the current status.
+- data/dol_debarred_employers.csv: employers that the US Department of Labor debarred from a visa labor program, copied from dol.gov on 2026-11-21. Real businesses, not scam operations. Check dol.gov for the current status. It holds 10 of the 17 willful violator rows.
 - data/staffing_wage_violations.csv: staffing and placement firms with back-wage findings of $10,000 or more since 2015, filtered from US Department of Labor enforcement data. Real businesses, not scam operations.
 - schema/company.schema.json: JSON Schema for one record.
 - README.md: field meanings, categories, method, limits.

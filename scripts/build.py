@@ -48,6 +48,14 @@ INTERNAL_CATEGORIES = {"mlm", "insurance_agency_recruiting", "commission_only_di
 DOMAIN_RE = re.compile(r"^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$")
 
 
+DATE_RE = re.compile(r"^\d{4}(-\d\d(-\d\d)?)?$")
+
+
+def alias_domains(row):
+    """Extra domains of the same entity. They are stored in `aliases`."""
+    return [a.strip() for a in row["aliases"].split(";") if DOMAIN_RE.match(a.strip())]
+
+
 def load_rows(path=CSV_PATH):
     with open(path, newline="", encoding="utf-8") as f:
         reader = csv.DictReader(f)
@@ -93,6 +101,8 @@ def write_csv(rows, path=CSV_PATH):
 def validate(rows):
     """Return a list of error strings. An empty list means the data is valid."""
     errors, ids, names, domains = [], set(), set(), set()
+    all_domains = [d for r in rows for d in [r["domain"], *alias_domains(r)] if d]
+    repeated = {d for d in all_domains if all_domains.count(d) > 1}
     for n, r in enumerate(rows, start=2):
         where = f"line {n} ({r['name']!r})"
         for key in ("id", "name", "name_normalized", "category", "source_type", "added_date"):
@@ -119,6 +129,11 @@ def validate(rows):
             # operation copied. The record must identify a domain.
             if not r["domain"] or r["match_on"] != "domain":
                 errors.append(f"{where}: this source type needs a domain and match_on = domain")
+        for d in alias_domains(r):
+            if d in repeated:
+                errors.append(f"{where}: alias domain {d!r} is also in another place")
+        if r["source_date"] and not DATE_RE.match(r["source_date"]):
+            errors.append(f"{where}: source_date is not YYYY, YYYY-MM or YYYY-MM-DD")
         ids.add(r["id"])
         names.add(r["name_normalized"])
         if r["evidence_level"] not in EVIDENCE_LEVELS:
@@ -166,6 +181,11 @@ def write_sqlite(rows, path=SQLITE_PATH):
         [[r[c] if r[c] != "" else None for c in FIELDS] for r in rows],
     )
     con.execute("CREATE INDEX idx_companies_domain ON companies(domain)")
+    con.execute("CREATE TABLE company_domains (domain TEXT PRIMARY KEY, id TEXT NOT NULL)")
+    con.executemany(
+        "INSERT INTO company_domains VALUES (?, ?)",
+        [(d, r["id"]) for r in rows for d in [r["domain"], *alias_domains(r)] if d],
+    )
     con.execute("CREATE INDEX idx_companies_name_normalized ON companies(name_normalized)")
     con.commit()
     con.execute("VACUUM")
@@ -173,15 +193,22 @@ def write_sqlite(rows, path=SQLITE_PATH):
 
 
 def write_lookalikes(rows, path=LOOKALIKE_PATH):
-    """One row per fake domain that copies a real business. Derived from companies.csv."""
-    out = [r for r in rows if r["impersonates"] and r["domain"]]
-    out.sort(key=lambda r: (r["impersonates"].lower(), r["domain"]))
+    """One row per fake domain and copied business. Derived from companies.csv.
+
+    Only records that name the copied business in `impersonates` are in the file.
+    """
+    out = []
+    for r in rows:
+        for business in [b.strip() for b in r["impersonates"].split(" / ") if b.strip()]:
+            for d in [r["domain"], *alias_domains(r)]:
+                if d:
+                    out.append((business, d, r["id"], r["source_type"], r["source_url"], r["source_date"]))
+    out.sort(key=lambda t: (t[0].lower(), t[1]))
     cols = ["impersonated_business", "lookalike_domain", "record_id", "source_type", "source_url", "source_date"]
     with open(path, "w", newline="", encoding="utf-8") as f:
         w = csv.writer(f, lineterminator="\n")
         w.writerow(cols)
-        for r in out:
-            w.writerow([r["impersonates"], r["domain"], r["id"], r["source_type"], r["source_url"], r["source_date"]])
+        w.writerows(out)
     return len(out)
 
 

@@ -9,7 +9,7 @@ About 1,040 records in two groups. About 1,000 are entities that an outside sour
 | Data set | File | Rows | What a row is |
 |---|---|---|---|
 | Job-scam company list | `data/companies.csv` | 1,039 | An entity that a source named in job-seeker fraud, or an employer that RRA skips. |
-| Look-alike domains | `data/lookalike_domains.csv` | 226 | A fake domain that copies a real business. |
+| Look-alike domains | `data/lookalike_domains.csv` | 230 | A fake domain that copies a real business. |
 | ATS and job board allowlist | `data/ats_hosts.csv` | 122 | A host of a real hiring platform. |
 | Employers debarred from visa labor programs | `data/dol_debarred_employers.csv` | 89 | A real employer on a US Department of Labor debarment list. |
 | Staffing firms with back-wage findings | `data/staffing_wage_violations.csv` | 469 | A closed US Department of Labor case against a real staffing firm. |
@@ -51,9 +51,9 @@ Maintainer: Alex Shinkarovsky, founder.
 |---|---|
 | `data/companies.csv` | The canonical file. One row per entity. GitHub shows it as a searchable table. |
 | `data/companies.jsonl` | One JSON object per line. Good for LLM pipelines and scripts. |
-| `data/companies.sqlite` | One table, `companies`, with indexes on `domain` and `name_normalized`. |
+| `data/companies.sqlite` | Table `companies`, with indexes on `domain` and `name_normalized`. Table `company_domains` maps every domain, including the extra domains in `aliases`, to a record `id`. |
 | `data/ats_hosts.csv`, `data/ats_hosts.jsonl` | Allowlist of known applicant tracking system and job board hosts. See "Allowlist". |
-| `data/lookalike_domains.csv` | Fake domains that copy a real business, one row per domain, sorted by the business they copy. The build script makes it from `companies.csv`. The business in the first column is the victim. |
+| `data/lookalike_domains.csv` | Fake domains that copy a real business, one row per domain, sorted by the business they copy. The build script makes it from `companies.csv`. The business in the first column is the victim. A record is in this file only when its source names the business that the domain copies. |
 | `data/dol_debarred_employers.csv` | Employers that the US Department of Labor debarred from the H-1B, H-2A, H-2B or PERM program. See the section below. |
 | `data/staffing_wage_violations.csv` | Staffing and placement firms with back-wage findings from the US Department of Labor. See the section below. |
 | `schema/company.schema.json` | JSON Schema for one record. |
@@ -128,7 +128,8 @@ Limits:
 
 - The copy is from 2026-11-21. A debarment can end or change after that date. Read the dol.gov page before you rely on a row.
 - The willful violator list has 17 rows on dol.gov. Our copy has the first 10.
-- We left out rows that name only a person.
+- We left out rows that name only a person. A row that names a person with a business name stays, as the Department of Labor writes it.
+- A blank `end_date` means that the list gives no end date, or that the debarment is permanent. The `reason` field says when it is permanent.
 
 ## Staffing firms with back-wage findings
 

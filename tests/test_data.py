@@ -73,6 +73,45 @@ class DataTest(unittest.TestCase):
     def test_stored_rows_need_no_completion(self):
         self.assertFalse(build.fill_derived([dict(r) for r in self.rows]))
 
+    def test_lookalike_file_matches_the_records(self):
+        import csv
+        with open(ROOT / "data" / "lookalike_domains.csv", newline="", encoding="utf-8") as f:
+            got = list(csv.DictReader(f))
+        want = set()
+        for r in self.rows:
+            for b in [b.strip() for b in r["impersonates"].split(" / ") if b.strip()]:
+                for d in [r["domain"], *build.alias_domains(r)]:
+                    if d:
+                        want.add((b, d))
+        self.assertEqual({(g["impersonated_business"], g["lookalike_domain"]) for g in got}, want)
+        self.assertEqual(len(got), len(want))
+
+    def test_every_domain_is_in_the_sqlite_domain_table(self):
+        con = sqlite3.connect(ROOT / "data" / "companies.sqlite")
+        got = {d for (d,) in con.execute("SELECT domain FROM company_domains")}
+        con.close()
+        want = {d for r in self.rows for d in [r["domain"], *build.alias_domains(r)] if d}
+        self.assertEqual(got, want)
+
+    def test_a_bad_date_and_a_repeated_alias_domain_are_reported(self):
+        rows = [dict(r) for r in self.rows[:2]]
+        rows[0]["source_date"] = "2026/05"
+        rows[1]["aliases"] = rows[0]["domain"] or "example-scam.com"
+        rows[0]["aliases"] = "example-scam.com"
+        errors = "\n".join(build.validate(rows))
+        self.assertIn("source_date", errors)
+        self.assertIn("alias domain", errors)
+
+    def test_companion_files_have_the_documented_header(self):
+        import csv
+        heads = {
+            "dol_debarred_employers.csv": "name,city,state,program,list,reason,start_date,end_date,source_url,retrieved_date",
+            "staffing_wage_violations.csv": ",".join(__import__("filter_whd").OUT_COLUMNS),
+        }
+        for name, head in heads.items():
+            with open(ROOT / "data" / name, newline="", encoding="utf-8") as f:
+                self.assertEqual(",".join(next(csv.reader(f))), head, name)
+
     def test_names_with_commas_and_quotes_survive(self):
         tricky = [r for r in self.rows if "," in r["name"] or '"' in r["name"]]
         self.assertTrue(tricky)
