@@ -42,6 +42,7 @@ Maintainer: Alex Shinkarovsky, founder.
 | `data/companies.sqlite` | One table, `companies`, with indexes on `domain` and `name_normalized`. |
 | `data/ats_hosts.csv`, `data/ats_hosts.jsonl` | Allowlist of known applicant tracking system and job board hosts. See "Allowlist". |
 | `data/lookalike_domains.csv` | Fake domains that copy a real business, one row per domain, sorted by the business they copy. The build script makes it from `companies.csv`. The business in the first column is the victim. |
+| `data/dol_debarred_employers.csv` | Employers that the US Department of Labor debarred from the H-1B, H-2A, H-2B or PERM program. See the section below. |
 | `schema/company.schema.json` | JSON Schema for one record. |
 | `llms.txt` | A short guide for LLMs and agents. |
 
@@ -94,6 +95,26 @@ Maintainer: Alex Shinkarovsky, founder.
 - A match means that the link uses a real hiring platform. It does not mean that the employer or the job is real, because a scam operation can also open an account on a real platform.
 - A link that is on no known platform and on no domain of the employer needs a closer look.
 - The list is incomplete. A host that is absent from the list is not suspect for that reason alone.
+
+## Employers debarred from US visa labor programs
+
+`data/dol_debarred_employers.csv` is a copy of three lists that the US Department of Labor publishes. It is a different kind of data from the company list. These employers are real businesses. The Department of Labor barred them from a visa program, or found a willful violation of the H-1B rules.
+
+| Field | Meaning |
+|---|---|
+| `name`, `city`, `state` | The employer, as the Department of Labor writes it. |
+| `program` | `H-1B`, `H-2A`, `H-2B` or `PERM`. |
+| `list` | `h1b_debarment`, `h1b_willful_violator` or `oflc_program_debarment`. |
+| `reason` | The reason that the list gives. |
+| `start_date`, `end_date` | The debarment period. For a willful violator row, `start_date` is the date of the determination. |
+| `source_url` | The dol.gov page or file that holds the row. |
+| `retrieved_date` | The date of our copy. |
+
+Limits:
+
+- The copy is from 2026-11-21. A debarment can end or change after that date. Read the dol.gov page before you rely on a row.
+- The willful violator list has 17 rows on dol.gov. Our copy has the first 10.
+- We left out rows that name only a person.
 
 ## Examples
 
