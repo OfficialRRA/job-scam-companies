@@ -65,7 +65,7 @@ Maintainer: Alex Shinkarovsky, founder.
 |---|---|
 | `id` | Stable identifier. It does not change when other fields change. |
 | `name` | For government sources and RRA internal records: the entity name as the source wrote it. For all other sources: the domain. |
-| `aliases` | Other names for the same entity, separated by `; `. |
+| `aliases` | Other names for the same entity, separated by `; `. It can also hold more domains of the same entity. Check it when you match a domain. |
 | `name_claimed` | The name that the operation used, when the record is identified by its domain. It can belong to a real business. Do not match on it. |
 | `name_normalized` | `name` in lower case with every character that is not a letter or a digit removed. Use it for matching. |
 | `domain` | Website domain, lower case, no `www.`. Blank when no source ties a domain to the entity. Records from sources other than a government action always have a domain. |
@@ -188,6 +188,7 @@ by_domain = {r["domain"]: r for r in records if r["domain"]}
 ## Limits
 
 - The list is incomplete. An entity that is absent from the list is not safe for that reason.
+- A domain can get a new owner after the source date. We leave out a domain that was registered again after the source date. Compare `source_date` with the age of the site that you see.
 - Some sources are old. An entity can close, change owners, or settle a case. Check `source_date`.
 - `consumer_reports` records come from reports that consumers sent to the BBB. The BBB did not investigate each one.
 - Scam domains change quickly. A domain in this list can be dead or can have a new owner.

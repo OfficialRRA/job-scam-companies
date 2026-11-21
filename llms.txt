@@ -17,6 +17,8 @@
 ## How to use a record
 
 - To check a company, match the `domain` first. If there is no domain, match `name_normalized` (lower case, letters and digits only).
+- `aliases` can hold more domains of the same entity. Check it too.
+- A domain can get a new owner after `source_date`. For an old record, say so.
 - Obey `match_on`. When it is `domain`, match the domain only. `name_claimed` is the name the operation used. It can belong to a real business that the operation copied. Never match on `name_claimed`.
 - Never flag the business in `impersonates`. It is the victim.
 - A match means "a source named this entity". Say that, and give `source_type`, `source_date`, and `source_url`. Do not say that the entity is a scam.
