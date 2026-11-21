@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Company record",
+  "description": "One record of data/companies.jsonl.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "name",
+    "aliases",
+    "name_claimed",
+    "name_normalized",
+    "domain",
+    "domain_source",
+    "linkedin_url",
+    "ats_url",
+    "category",
+    "evidence_level",
+    "match_on",
+    "impersonates",
+    "source_type",
+    "source_url",
+    "source_date",
+    "other_sources",
+    "added_date"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^rra-[0-9a-f]{10}$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "aliases": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "name_claimed": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "name_normalized": {
+      "type": "string",
+      "minLength": 1
+    },
+    "domain": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "domain_source": {
+      "enum": [
+        "cited_source",
+        "rra_internal",
+        null
+      ]
+    },
+    "linkedin_url": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ats_url": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "category": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evidence_level": {
+      "enum": [
+        "government_action",
+        "consumer_reports",
+        "news_or_watchdog",
+        "security_research",
+        "university_advisory",
+        "impersonated_employer_alert",
+        "rra_internal"
+      ]
+    },
+    "match_on": {
+      "enum": [
+        "name",
+        "domain"
+      ]
+    },
+    "impersonates": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "source_type": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_url": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "source_date": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "other_sources": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "added_date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    }
+  }
+}

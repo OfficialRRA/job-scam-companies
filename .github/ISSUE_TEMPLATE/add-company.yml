@@ -1,0 +1,56 @@
+name: Add a company
+description: Suggest an entity for the list. A public source is required.
+title: "Add: <company name or domain>"
+labels: ["new-record"]
+body:
+  - type: input
+    id: name
+    attributes:
+      label: Name
+      description: The name that the source uses for the entity.
+    validations:
+      required: true
+  - type: input
+    id: domain
+    attributes:
+      label: Domain
+      description: The website domain, if the source gives one. Leave it blank if you are not sure.
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - fake_job_offer
+        - fake_recruiter_impersonation
+        - reshipping_mule
+        - fake_check
+        - task_scam
+        - work_from_home
+        - pay_for_placement
+        - fake_staffing_agency
+        - visa_h1b_shell
+        - business_opportunity
+        - Not sure
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Source link
+      description: A public page that names the entity. See CONTRIBUTING.md for the sources that we accept.
+    validations:
+      required: true
+  - type: input
+    id: source_date
+    attributes:
+      label: Date of the source
+  - type: input
+    id: impersonates
+    attributes:
+      label: Real business that the operation copies
+      description: Fill this in if the operation uses the name of a real employer.
+  - type: textarea
+    id: notes
+    attributes:
+      label: Other details
+      description: Do not include private data about any person.

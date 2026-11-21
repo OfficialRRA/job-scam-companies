@@ -1,0 +1,34 @@
+name: Correction or removal
+description: Ask us to correct or remove a record.
+title: "Correction: <record id or name>"
+labels: ["correction"]
+body:
+  - type: input
+    id: record
+    attributes:
+      label: Record id or name
+      description: The `id` field of the record, or the name and the domain.
+    validations:
+      required: true
+  - type: dropdown
+    id: request
+    attributes:
+      label: Request
+      options:
+        - Remove the record
+        - Correct a field
+        - The record names a real business as the entity
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Tell us what is wrong. Add links that we can check.
+    validations:
+      required: true
+  - type: input
+    id: relation
+    attributes:
+      label: Your relation to the entity
+      description: For example, owner, employee, lawyer, or member of the public.

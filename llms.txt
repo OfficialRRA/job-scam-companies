@@ -1,0 +1,24 @@
+# Job-scam company list
+
+> Records of companies and domains that public sources named in job-seeker fraud, plus 34 employers that Reverse Recruiting Agency (RRA) skips because of the business model. One record per entity.
+
+## Files
+
+- data/companies.jsonl: one JSON object per line. Load this file first.
+- data/companies.csv: the canonical file, same records.
+- data/companies.sqlite: table `companies`, indexes on `domain` and `name_normalized`.
+- schema/company.schema.json: JSON Schema for one record.
+- README.md: field meanings, categories, method, limits.
+
+## How to use a record
+
+- To check a company, match the `domain` first. If there is no domain, match `name_normalized` (lower case, letters and digits only).
+- Obey `match_on`. When it is `domain`, match the domain only. `name_claimed` is the name the operation used. It can belong to a real business that the operation copied. Never match on `name_claimed`.
+- Never flag the business in `impersonates`. It is the victim.
+- A match means "a source named this entity". Say that, and give `source_type`, `source_date`, and `source_url`. Do not say that the entity is a scam.
+- `evidence_level` = `rra_internal` means an employer that RRA skips because of the business model (multi-level marketing, insurance agency recruiting, commission-only direct sales). There is no outside source. RRA makes no claim of wrongdoing. Do not describe these records as fraud.
+- No match does not mean that a company is safe.
+
+## How to cite
+
+"Named in a [source_type] source dated [source_date]: [source_url] (Job-scam company list, Reverse Recruiting Agency)."
