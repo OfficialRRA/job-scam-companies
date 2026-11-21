@@ -4,6 +4,18 @@ A public list of companies and domains that job seekers should check before they
 
 About 1,000 records in two groups. About 965 are entities that an outside source named in job-seeker fraud. Each of those records says who named the entity, when, and where you can read the source. The other 34 are employers that RRA skips because of the business model. Those have no outside source and carry no claim of fraud.
 
+## What is in this repository
+
+| Data set | File | Rows | What a row is |
+|---|---|---|---|
+| Job-scam company list | `data/companies.csv` | 999 | An entity that a source named in job-seeker fraud, or an employer that RRA skips. |
+| Look-alike domains | `data/lookalike_domains.csv` | 220 | A fake domain that copies a real business. |
+| ATS and job board allowlist | `data/ats_hosts.csv` | 122 | A host of a real hiring platform. |
+| Employers debarred from visa labor programs | `data/dol_debarred_employers.csv` | 89 | A real employer on a US Department of Labor debarment list. |
+| Staffing firms with back-wage findings | `data/staffing_wage_violations.csv` | 469 | A closed US Department of Labor case against a real staffing firm. |
+
+The last two data sets list real businesses, not scam operations. Each data set has its own section below.
+
 ## Why this exists
 
 Fake employers, fake recruiters, and pay-to-work schemes take money, time, and personal data from people who look for work. Career coaches, recruiters, and reverse recruiters each keep a private list of names to avoid. A shared list in the open helps everyone, and anyone can check it and correct it.
@@ -199,6 +211,8 @@ If a record is wrong, or if it names your business, open an issue with the "Corr
 ## Licence
 
 Data: CC BY 4.0 (`LICENSE-DATA`). Code: MIT (`LICENSE`).
+
+The two Department of Labor files copy US government data, which is in the public domain. The licence covers our selection and format only.
 
 ## Disclaimer
 

@@ -1,4 +1,4 @@
-# Job-scam company list
+# Job-scam company list and related data sets
 
 > Records of companies and domains that public sources named in job-seeker fraud, plus 34 employers that Reverse Recruiting Agency (RRA) skips because of the business model. One record per entity.
 
