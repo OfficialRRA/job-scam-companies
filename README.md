@@ -43,6 +43,7 @@ Maintainer: Alex Shinkarovsky, founder.
 | `data/ats_hosts.csv`, `data/ats_hosts.jsonl` | Allowlist of known applicant tracking system and job board hosts. See "Allowlist". |
 | `data/lookalike_domains.csv` | Fake domains that copy a real business, one row per domain, sorted by the business they copy. The build script makes it from `companies.csv`. The business in the first column is the victim. |
 | `data/dol_debarred_employers.csv` | Employers that the US Department of Labor debarred from the H-1B, H-2A, H-2B or PERM program. See the section below. |
+| `data/staffing_wage_violations.csv` | Staffing and placement firms with back-wage findings from the US Department of Labor. See the section below. |
 | `schema/company.schema.json` | JSON Schema for one record. |
 | `llms.txt` | A short guide for LLMs and agents. |
 
@@ -115,6 +116,33 @@ Limits:
 - The copy is from 2026-11-21. A debarment can end or change after that date. Read the dol.gov page before you rely on a row.
 - The willful violator list has 17 rows on dol.gov. Our copy has the first 10.
 - We left out rows that name only a person.
+
+## Staffing firms with back-wage findings
+
+`data/staffing_wage_violations.csv` is a filter of the public enforcement data of the US Department of Labor, Wage and Hour Division. These are real businesses. Each row is one closed case in which the division found that the firm owed back wages.
+
+The filter keeps a case when all of these are true:
+
+- The industry code starts with `5613` (employment services: placement agencies, executive search, temporary help, employer organizations).
+- The back wages are $10,000 or more.
+- The findings period ended in 2015 or later.
+
+| Field | Meaning |
+|---|---|
+| `name`, `trade_name`, `city`, `state` | The employer, as the division writes it. |
+| `naics_code`, `naics_description` | The industry code in the source data. |
+| `findings_start_date`, `findings_end_date` | The period that the findings cover. |
+| `back_wages` | The back wages that the employer agreed to pay, in US dollars. |
+| `employees_owed` | The number of employees who were owed back wages. |
+| `flsa_violations` | The number of Fair Labor Standards Act violations. |
+| `case_id` | The case number in the source data. |
+| `source_url`, `source_data_date` | The source file and its date. |
+
+Limits:
+
+- A case is an administrative finding. It is not a court judgment.
+- The source data has errors. For example, some rows show back wages with zero employees.
+- A large firm has more cases than a small firm. Do not compare firms by case count alone.
 
 ## Examples
 
