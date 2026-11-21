@@ -8,7 +8,7 @@ About 1,040 records in two groups. About 1,000 are entities that an outside sour
 
 | Data set | File | Rows | What a row is |
 |---|---|---|---|
-| Job-scam company list | `data/companies.csv` | 1,039 | An entity that a source named in job-seeker fraud, or an employer that RRA skips. |
+| Job-scam company list | `data/companies.csv` | 1,042 | An entity that a source named in job-seeker fraud, or an employer that RRA skips. |
 | Look-alike domains | `data/lookalike_domains.csv` | 226 | A fake domain that copies a real business. |
 | ATS and job board allowlist | `data/ats_hosts.csv` | 122 | A host of a real hiring platform. |
 | Employers debarred from visa labor programs | `data/dol_debarred_employers.csv` | 89 | A real employer on a US Department of Labor debarment list. |
