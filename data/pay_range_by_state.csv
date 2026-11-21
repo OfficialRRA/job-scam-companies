@@ -1,0 +1,5 @@
+state,period,postings,with_pay,without_pay,share_without_pay,employers,source,retrieved_date
+California,2026-01-01 to 2026-11-21,992,831,161,0.162,684,rra_internal,2026-11-21
+Colorado,2026-01-01 to 2026-11-21,117,94,23,0.197,99,rra_internal,2026-11-21
+New York,2026-01-01 to 2026-11-21,3343,2827,516,0.154,1655,rra_internal,2026-11-21
+Washington,2026-01-01 to 2026-11-21,144,128,16,0.111,108,rra_internal,2026-11-21

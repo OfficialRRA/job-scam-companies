@@ -47,6 +47,7 @@ This guide is for `data/companies.csv`. The other files have a different source:
 
 - `data/lookalike_domains.csv`: the build script makes it. Do not edit it. Change `companies.csv`.
 - `data/dol_debarred_employers.csv` and `data/staffing_wage_violations.csv`: copies of US Department of Labor data. Open an issue if a row differs from the source.
+- `data/pay_range_by_state.csv`: counts from RRA's own job data. It takes no outside rows.
 - `data/ats_hosts.csv`: open an issue with the host and a link that shows it is a hiring platform.
 
 ## Corrections and removals

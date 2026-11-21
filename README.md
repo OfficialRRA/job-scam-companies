@@ -8,11 +8,12 @@ About 1,040 records in two groups. About 1,000 are entities that an outside sour
 
 | Data set | File | Rows | What a row is |
 |---|---|---|---|
-| Job-scam company list | `data/companies.csv` | 1,042 | An entity that a source named in job-seeker fraud, or an employer that RRA skips. |
+| Job-scam company list | `data/companies.csv` | 1,039 | An entity that a source named in job-seeker fraud, or an employer that RRA skips. |
 | Look-alike domains | `data/lookalike_domains.csv` | 226 | A fake domain that copies a real business. |
 | ATS and job board allowlist | `data/ats_hosts.csv` | 122 | A host of a real hiring platform. |
 | Employers debarred from visa labor programs | `data/dol_debarred_employers.csv` | 89 | A real employer on a US Department of Labor debarment list. |
 | Staffing firms with back-wage findings | `data/staffing_wage_violations.csv` | 469 | A closed US Department of Labor case against a real staffing firm. |
+| Pay ranges in job posts, by state | `data/pay_range_by_state.csv` | 4 | A state, with counts of job posts with and without a pay figure. |
 
 The last two data sets list real businesses, not scam operations. Each data set has its own section below.
 
@@ -56,6 +57,7 @@ Maintainer: Alex Shinkarovsky, founder.
 | `data/lookalike_domains.csv` | Fake domains that copy a real business, one row per domain, sorted by the business they copy. The build script makes it from `companies.csv`. The business in the first column is the victim. |
 | `data/dol_debarred_employers.csv` | Employers that the US Department of Labor debarred from the H-1B, H-2A, H-2B or PERM program. See the section below. |
 | `data/staffing_wage_violations.csv` | Staffing and placement firms with back-wage findings from the US Department of Labor. See the section below. |
+| `data/pay_range_by_state.csv` | Counts of job posts with and without a pay figure, in four states with a pay transparency law. RRA data. See the section below. |
 | `schema/company.schema.json` | JSON Schema for one record. |
 | `llms.txt` | A short guide for LLMs and agents. |
 
@@ -156,6 +158,25 @@ Limits:
 - A case is an administrative finding. It is not a court judgment.
 - The source data has errors. For example, some rows show back wages with zero employees.
 - A large firm has more cases than a small firm. Do not compare firms by case count alone.
+
+## Pay ranges in job posts, by state
+
+`data/pay_range_by_state.csv` counts job posts that RRA applied to for clients in 2026, in four states with a pay transparency law. The source is RRA's own job data. The file has counts only and names no employer.
+
+| Field | Meaning |
+|---|---|
+| `state` | California, Colorado, New York or Washington, from the location in the job post. |
+| `period` | The application dates that the counts cover. |
+| `postings` | Job posts with a stored job description. Remote and hybrid posts are left out. |
+| `with_pay`, `without_pay` | Posts with and without a pay figure in the stored job description. |
+| `share_without_pay` | `without_pay` divided by `postings`. |
+| `employers` | The number of different employer domains. |
+
+Limits:
+
+- The sample is the jobs that RRA clients wanted. It is not a random sample of job posts.
+- Some job boards show the pay range outside the job description. Those posts count as `without_pay`, so the true share is lower.
+- The laws exempt small employers. A post without pay does not prove a violation. For this reason the file names no employer.
 
 ## Examples
 
