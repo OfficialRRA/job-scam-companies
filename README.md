@@ -2,14 +2,14 @@
 
 A public list of companies and domains that job seekers should check before they apply, interview, or share personal data. Reverse Recruiting Agency (RRA) keeps it. We use it to decide which employers we skip when we apply to jobs for our clients.
 
-About 1,000 records in two groups. About 965 are entities that an outside source named in job-seeker fraud. Each of those records says who named the entity, when, and where you can read the source. The other 34 are employers that RRA skips because of the business model. Those have no outside source and carry no claim of fraud.
+About 1,040 records in two groups. About 1,000 are entities that an outside source named in job-seeker fraud. Each of those records says who named the entity, when, and where you can read the source. The other 34 are employers that RRA skips because of the business model. Those have no outside source and carry no claim of fraud.
 
 ## What is in this repository
 
 | Data set | File | Rows | What a row is |
 |---|---|---|---|
-| Job-scam company list | `data/companies.csv` | 999 | An entity that a source named in job-seeker fraud, or an employer that RRA skips. |
-| Look-alike domains | `data/lookalike_domains.csv` | 220 | A fake domain that copies a real business. |
+| Job-scam company list | `data/companies.csv` | 1,039 | An entity that a source named in job-seeker fraud, or an employer that RRA skips. |
+| Look-alike domains | `data/lookalike_domains.csv` | 226 | A fake domain that copies a real business. |
 | ATS and job board allowlist | `data/ats_hosts.csv` | 122 | A host of a real hiring platform. |
 | Employers debarred from visa labor programs | `data/dol_debarred_employers.csv` | 89 | A real employer on a US Department of Labor debarment list. |
 | Staffing firms with back-wage findings | `data/staffing_wage_violations.csv` | 469 | A closed US Department of Labor case against a real staffing firm. |
@@ -88,6 +88,7 @@ Maintainer: Alex Shinkarovsky, founder.
 |---|---|
 | `fake_job_offer` | An operation that sends job offers for jobs that do not exist. |
 | `fake_recruiter_impersonation` | A domain or entity that poses as a real employer or recruiter. |
+| `fake_job_board` | A site that poses as a job board, a career portal or a hiring platform to collect resumes, personal data or logins, or to deliver malware. |
 | `reshipping_mule` | "Package handler" or "quality inspector" jobs that move stolen goods. |
 | `fake_check` | A job that sends a check and asks for part of the money back. |
 | `task_scam` | Paid "tasks" that require a deposit. |
